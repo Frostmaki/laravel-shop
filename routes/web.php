@@ -18,6 +18,10 @@ Auth::routes();
 Route::group(['middleware'=> 'auth'],function (){
     Route::get('/emailVerifyNotice','PagesController@emailVerifyNotice')->name('emailVerifyNotice');
 
+    Route::get('/email_verification/verify','EmailVerificationController@verify')->name('emailVerification.verify');
+
+    Route::get('/email_verification/send','EmailVerificationController@send')->name('emailVerification.send');
+
     //email verify
     Route::group(['middleware' => 'email_verified'],function (){
         Route::get('/test',function (){
