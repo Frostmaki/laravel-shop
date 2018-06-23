@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Notifications\EmailVerificationNotification;
 use App\User;
-use Illuminate\Filesystem\Cache;
+
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+
 
 class EmailVerificationController extends Controller
 {
@@ -37,10 +40,12 @@ class EmailVerificationController extends Controller
         Cache::forget('email_verification_'.$email);
 
         //最关键的，要把对应用户的‘email_verified'改成’true‘
-        $user->update(['email_verified'=>true]);
+        DB::table('users')
+            ->where('email',$email)
+            ->update(['email_verified'=>true]);
 
         //最后告诉用户邮箱验证成功
-        return view('page.success',['msg'=> '邮箱验证成功']);
+        return view('pages.success',['msg'=> '邮箱验证成功']);
     }
 
     public function send(Request $request){
